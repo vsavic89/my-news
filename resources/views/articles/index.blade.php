@@ -4,10 +4,41 @@
     <h1>List of articles</h1>
 </div>
     @if(count($articles) > 0)
-        <table id="tbl" class='display' width="100%">
-            @foreach($articles as $article)                            
-                
-            @endforeach    
+        <table class='table display' width="100%">                                  
+            <thead>
+                <tr>
+                    <th>
+                        Title
+                    </th>
+                    <th>
+                        Body
+                    </th>
+                    <th>
+                        Tags
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($articles as $article)      
+                <tr>
+                    <td>
+                        {{ $article->title }}
+                    </td>
+                    <td>
+                        {{ $article->body }}
+                    </td> 
+                    <td>
+                        @foreach($article->tags as $tag)
+                            @if($loop->last)
+                                {{ $tag->name }}
+                            @else
+                                {{ $tag->name . ', ' }}
+                            @endif
+                        @endforeach
+                    </td>
+                </tr>
+                @endforeach  
+            </tbody>              
         </table>
     @else
         <div class='alert alert-danger'>

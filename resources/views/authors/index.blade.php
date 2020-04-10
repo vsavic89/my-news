@@ -4,7 +4,7 @@
     <h1>List of authors</h1>
 </div>
 @if(count($authors) > 0)
-    <table class="display" id="authors" style="width:100%">
+    <table class="table display" id="authors" style="width:100%">
         <thead>
             <tr>
                 <th>
@@ -29,9 +29,4 @@
         <h4>No authors to show!</h4>
     </div>
 @endif
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('#authors').DataTable();
-    } );
-</script>
 @endsection

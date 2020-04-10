@@ -8,12 +8,18 @@
     </head>
     <body>
         <div class='container'>
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <a class="navbar-brand" href="/my-news"><u class="badge-primary p-2">My News</u></a>                
-                <a class="navbar-link" href="/api/authors">Authors</a> 
+            <nav class="navbar navbar-expand-lg navbar-light bg-light pl-0 pt-2 pb-2">
+                <a class="navbar-brand mr-5 ml-0" href="/my-news"><u class="badge-primary p-2">My News</u></a>                
+                <a class="navbar-link mr-5" href="/api/authors">Authors</a> 
+                <a class="navbar-link mr-5" href="/api/articles">Articles</a> 
               </nav>
             @yield('content')
             @yield('error_handler')
         </div>                
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('.table').DataTable();
+            } );
+        </script>
     </body>
 </html>
