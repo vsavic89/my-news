@@ -22,5 +22,11 @@ Route::middleware('apilogger')->post('/test',function(){
     return response()->json("test");
 });
 
-Route::get('authors/create', 'AuthorsController@create');
-Route::get('my-news', 'MyNewsController@show');
+Route::get('authors/create', 'AuthorsController@create')->name('create-author');
+Route::get('my-news', 'MyNewsController@show')->name('home');
+Route::get('articles', 'ArticlesController@index')->name('articles');
+Route::get('authors', 'AuthorsController@index')->name('authors');
+Route::get('tags', 'TagsController@index')->name('tags');
+Route::get('articles/{id}', 'ArticlesController@show')->name('single-article');
+Route::get('authors/{id}', 'AuthorsController@show')->name('single-author');
+Route::get('tags/{id}', 'TagsController@show')->name('single-tag');

@@ -8,6 +8,9 @@
             <thead>
                 <tr>
                     <th>
+                        ID
+                    </th>
+                    <th>
                         Title
                     </th>
                     <th>
@@ -21,6 +24,9 @@
             <tbody>
                 @foreach($articles as $article)      
                 <tr>
+                    <td>
+                        {{ $article->id }}
+                    </td>
                     <td>
                         {{ $article->title }}
                     </td>

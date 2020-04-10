@@ -17,7 +17,7 @@ class AuthorsController extends Controller
      */
     public function index()
     {
-        $authors = Author::latest()->paginate(10);
+        $authors = Author::latest()->paginate(30);
         
         return view('authors.index', [
             'authors' => AuthorResource::collection($authors),            
@@ -101,7 +101,7 @@ class AuthorsController extends Controller
         if($author)
         {
             if($author->delete()){
-              return new AuthorResource($author);  
+              return redirect()->back(); //new AuthorResource($author);  
             }
         }else{
             return response()->json(['error' => 'Can\'t find author!']);

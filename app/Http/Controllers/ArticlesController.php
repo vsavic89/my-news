@@ -17,7 +17,7 @@ class ArticlesController extends Controller
      */
     public function index()
     {
-        $articles = Article::paginate(15);                
+        $articles = Article::latest()->paginate(30);                
         
         return view('articles.index', ['articles' => ArticleResource::collection($articles)]);
     }

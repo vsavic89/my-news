@@ -1,6 +1,5 @@
 @extends('master')
 @section('content')
-<div class="container">
     <h1 class='alert alert-info text-center'>Create New Author<small>&nbsp;&nbsp;fresh article creator</small></h1>
     <p class='lead'>Lorem ipsum... <button class='btn btn-info' disabled='disabled'>Disabled</button></p>
     <p>Lorem ipsum...rogjoiwrej <mark>gerwiogj</mark> iroejg oierjg <span class='text-primary'>ieorjg</span> ioerjg oierj oierj ioerj </p>
@@ -37,7 +36,6 @@
                     <button class='mt-2 btn btn-primary btn-block' type="submit">Send</button>
                 </div>        
             </div>   
-        </div>        
+        </div>   
     </form>
-</div>
 @endsection

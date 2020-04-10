@@ -17,14 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::group(['middleware' => 'apilogger'], function(){
-    Route::get('articles', 'ArticlesController@index');
+Route::group(['middleware' => 'apilogger'], function(){    
     Route::post('articles', 'ArticlesController@store');
-    Route::put('articles', 'ArticlesController@store');
-    Route::get('authors', 'AuthorsController@index')->name('authors');
+    Route::put('articles', 'ArticlesController@store');    
     Route::post('authors', 'AuthorsController@store');
-    Route::put('authors', 'AuthorsController@store');    
-    Route::get('articles/{id}', 'ArticlesController@show');
-    Route::delete('articles/{id}', 'ArticlesController@destroy');   
-    Route::delete('authors/{id}', 'AuthorsController@destroy');
+    Route::put('authors', 'AuthorsController@store');        
+    Route::post('articles/delete/{id}', 'ArticlesController@destroy');   
+    Route::post('authors/delete/{id}', 'AuthorsController@destroy');
 });

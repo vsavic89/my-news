@@ -10,8 +10,9 @@
         <div class='container'>
             <nav class="navbar navbar-expand-lg navbar-light bg-light pl-0 pt-2 pb-2">
                 <a class="navbar-brand mr-5 ml-0" href="/my-news"><u class="badge-primary p-2">My News</u></a>                
-                <a class="navbar-link mr-5" href="/api/authors">Authors</a> 
-                <a class="navbar-link mr-5" href="/api/articles">Articles</a> 
+                <a class="navbar-link mr-5" href="/authors">Authors</a> 
+                <a class="navbar-link mr-5" href="/articles">Articles</a> 
+                <a class="navbar-link mr-5" href="/tags">Tags</a> 
               </nav>
             @yield('content')
             @yield('error_handler')

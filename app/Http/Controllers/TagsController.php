@@ -14,7 +14,9 @@ class TagsController extends Controller
      */
     public function index()
     {
-        //
+        $tags = Tag::latest()->paginate(30);
+        
+        return view('tags.index', ['tags' => $tags]);
     }
 
     /**
