@@ -10,6 +10,18 @@ use Illuminate\Validation\Validator;
 
 class AuthorsController extends Controller
 {
+    
+    public function _validate(Request $request)
+    {
+        $validator = \Validator::make($request->all(), AuthorRequest::rules());
+
+        if ($validator->fails()) {
+            return false;
+        }else{
+            return true;
+        }
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -41,17 +53,15 @@ class AuthorsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {                                        
-        $validator = \Validator::make($request->all(), AuthorRequest::rules());
-
-        if ($validator->fails()) {
-            return view('_error_handler', ['errors' => $validator->errors()]);
-        }else{
-            $author = ($request->isMethod('put')) ? Author::findOrFail($request->input('id')) : new Author();            
+    {       
+        if($this->_validate($request))
+        {        
+            $author = new Author();            
             $author->_save($request->input('first_name'), $request->input('last_name'), $request->input('city'));                                    
 
             return redirect()->route('authors');
-//            return new AuthorResource($author);      
+        }else{
+            return view('_error_handler', ['errors' => $validator->errors()]);
         }
     }
 
@@ -72,9 +82,11 @@ class AuthorsController extends Controller
      * @param  \App\Author  $author
      * @return \Illuminate\Http\Response
      */
-    public function edit(Author $author)
+    public function edit($id)
     {
-        //
+        $author = Author::findOrFail($id);
+        
+        return view('authors.create', ['model' => $author]);
     }
 
     /**
@@ -84,9 +96,17 @@ class AuthorsController extends Controller
      * @param  \App\Author  $author
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Author $author)
-    {
-        //
+    public function update(Request $request)
+    {                                        
+        if($this->_validate($request))
+        {        
+            $author = Author::findOrFail($request->route('id'));            
+            $author->_save($request->input('first_name'), $request->input('last_name'), $request->input('city'));                                    
+
+            return redirect()->route('authors');
+        }else{
+            return view('_error_handler', ['errors' => $validator->errors()]);
+        }
     }
 
     /**
