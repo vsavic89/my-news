@@ -23,6 +23,7 @@ Route::middleware('apilogger')->post('/test',function(){
 });
 
 Route::get('authors/create', 'AuthorsController@create')->name('create-author');
+Route::get('articles/create', 'ArticlesController@create')->name('create-article');
 Route::get('my-news', 'MyNewsController@show')->name('home');
 Route::get('articles', 'ArticlesController@index')->name('articles');
 Route::get('authors', 'AuthorsController@index')->name('authors');

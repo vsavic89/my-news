@@ -26,7 +26,8 @@ class AuthorRequest extends FormRequest
         return [
             'first_name' => 'required|max:255',
             'last_name' => 'required|max:255',
-            'city' => 'required|max:255'
+            'city' => 'required|max:255',
+            'author_id' => 'required|integer'
         ];
     }
 }

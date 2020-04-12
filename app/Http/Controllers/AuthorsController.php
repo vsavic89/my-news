@@ -16,7 +16,7 @@ class AuthorsController extends Controller
         $validator = \Validator::make($request->all(), AuthorRequest::rules());
 
         if ($validator->fails()) {
-            return false;
+            return view('_error_handler', ['errors' => $validator->errors()]);            
         }else{
             return true;
         }
@@ -60,8 +60,6 @@ class AuthorsController extends Controller
             $author->_save($request->input('first_name'), $request->input('last_name'), $request->input('city'));                                    
 
             return redirect()->route('authors');
-        }else{
-            return view('_error_handler', ['errors' => $validator->errors()]);
         }
     }
 
@@ -104,8 +102,6 @@ class AuthorsController extends Controller
             $author->_save($request->input('first_name'), $request->input('last_name'), $request->input('city'));                                    
 
             return redirect()->route('authors');
-        }else{
-            return view('_error_handler', ['errors' => $validator->errors()]);
         }
     }
 
