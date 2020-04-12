@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Article;
 use App\Author;
+use App\Tag;
 use App\Http\Resources\ArticleResource;
 use App\Http\Requests\ArticleRequest;
-use Illuminate\Validation\Validator;
 
 class ArticlesController extends Controller
 {
@@ -18,15 +18,18 @@ class ArticlesController extends Controller
         return $authors;
     }        
     
+    public function _getTags()
+    {
+        $tags = Tag::all()->sortBy('name');
+        
+        return $tags;
+    }        
+    
     public function _validate(Request $request)
     {
         $validator = \Validator::make($request->all(), ArticleRequest::rules());
 
-        if ($validator->fails()) {
-            return view('_error_handler', ['errors' => $validator->errors()]);            
-        }else{
-            return true;
-        }
+        return $validator;
     }
     
     /**
@@ -48,7 +51,7 @@ class ArticlesController extends Controller
      */
     public function create()
     {        
-        return view('articles.create', ['authors' => $this->_getAuthors()]);
+        return view('articles.create', ['authors' => $this->_getAuthors(), 'tags' => $this->_getTags()]);
     }
 
     /**
@@ -58,13 +61,16 @@ class ArticlesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        if($this->_validate($request))
-        {                             
+    {                        
+        $validated = $this->_validate($request);                
+        if(!$validated->fails())
+        {                              
             $article = new Article();
-            $article->_save($request->input('title'), $request->input('body'), $request->input('author_id'));                        
+            $article->_save($request->input('title'), $request->input('body'), $request->input('author_id'), $request->input('tags'));                        
 
             return redirect()->route('articles'); //new ArticleResource($article);                    
+        }else{
+            return view('articles.create', ['errors' => $validated->errors()]) ;
         }
     }
 
@@ -91,7 +97,7 @@ class ArticlesController extends Controller
     {
         $article = Article::findOrFail($id);
         
-        return view('articles.create', ['model' => $article, 'authors' => $this->_getAuthors()]);
+        return view('articles.create', ['model' => $article, 'authors' => $this->_getAuthors(), 'tags' => $this->_getTags()]);
     }
 
     /**
@@ -103,12 +109,15 @@ class ArticlesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if($this->_validate($request))
-        {                             
-            $article = Article::findOrFail($request->route('id'));
-            $article->_save($request->input('title'), $request->input('body'), $request->input('author_id'));                        
+        $article = Article::findOrFail($request->route('id'));
+        $validated = $this->_validate($request);    
+        if(!$validated->fails())
+        {                                        
+            $article->_save($request->input('title'), $request->input('body'), $request->input('author_id'), $request->input('tags'));                        
 
             return redirect()->route('articles'); //new ArticleResource($article);                    
+        }else{
+            return view('articles.create', ['errors' => $validated->errors(), 'model' => $article]) ;
         }
     }
 
@@ -126,7 +135,7 @@ class ArticlesController extends Controller
                 return redirect()->route('articles'); //new ArticleResource($article);
             }
         }else{
-            return response()->json(['error' => 'Desired article not found!']);
+            return response()->json(['errors' => 'Desired article not found!']);
         }
     }
 }

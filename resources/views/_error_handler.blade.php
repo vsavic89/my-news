@@ -1,7 +1,6 @@
-@extends('master')
-@section('error_handler')
-    <h1>Error Results</h1>
-    @if ($errors->any())
+@section('error_handler')    
+    @if (!empty($errors) && $errors->any())
+        <h1>Error Results</h1>
         <div class="alert alert-danger">
             <ul>
                 @foreach ($errors->all() as $error)

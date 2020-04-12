@@ -21,11 +21,11 @@ class ArticleResource extends JsonResource
             'tags' => $this->tags
         ];
     }
-    public function with($request)
-    {                
-        return [
-          'version' => 'v1.0',
-          'author' => 'Vladimir Savic'
-        ];
-    }
+//    public function with($request)
+//    {                
+//        return [
+//          'version' => 'v1.0',
+//          'author' => 'Vladimir Savic'
+//        ];
+//    }
 }

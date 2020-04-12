@@ -3,10 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Tag;
+use App\Http\Requests\TagRequest;
+use App\Http\Resources\TagResource;
 use Illuminate\Http\Request;
 
 class TagsController extends Controller
 {
+    
+    public function _validate(Request $request)
+    {
+        $validator = \Validator::make($request->all(), TagRequest::rules());                
+        
+        return $validator;
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +36,7 @@ class TagsController extends Controller
      */
     public function create()
     {
-        //
+        return view('tags.create');
     }
 
     /**
@@ -36,8 +46,17 @@ class TagsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
+    {                
+        $validated = $this->_validate($request);                
+        if(!$validated->fails())
+        {                
+            $tag = new Tag();
+            $tag->_save($request->input('name'));
+
+            return redirect()->route('tags'); //new ArticleResource($article);                    
+        }else{
+            return view('tags.create', ['errors' => $validated->errors()]) ;
+        }
     }
 
     /**
@@ -46,9 +65,11 @@ class TagsController extends Controller
      * @param  \App\Tag  $tag
      * @return \Illuminate\Http\Response
      */
-    public function show(Tag $tag)
+    public function show($id)
     {
-        //
+        $tag = Tag::findOrFail($id);
+        
+        return new TagResource($tag);
     }
 
     /**
@@ -57,9 +78,11 @@ class TagsController extends Controller
      * @param  \App\Tag  $tag
      * @return \Illuminate\Http\Response
      */
-    public function edit(Tag $tag)
+    public function edit($id)
     {
-        //
+        $tag = Tag::findOrFail($id);
+        
+        return view('tags.create', ['model' => $tag]);
     }
 
     /**
@@ -71,7 +94,19 @@ class TagsController extends Controller
      */
     public function update(Request $request, Tag $tag)
     {
-        //
+        $validated = $this->_validate($request);                
+        $tag = Tag::findOrFail($request->route('id'));
+        if(!$validated->fails())
+        {                                                       
+            $tag->_save($request->input('name'));
+
+            return redirect()->route('tags'); //new ArticleResource($article);                    
+        }else{
+            return view('tags.create', [
+                'errors' => $validated->errors(),
+                'model' => $tag
+                ]);
+        }
     }
 
     /**
@@ -80,8 +115,15 @@ class TagsController extends Controller
      * @param  \App\Tag  $tag
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Tag $tag)
+    public function destroy($id)
     {
-        //
+        $tag = Tag::find($id);
+        if($tag){
+            if($tag->delete()){
+                return redirect()->route('tags'); //new ArticleResource($article);
+            }
+        }else{
+            return response()->json(['errors' => 'Desired article not found!']);
+        }
     }
 }

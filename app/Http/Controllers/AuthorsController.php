@@ -6,7 +6,6 @@ use App\Author;
 use Illuminate\Http\Request;
 use App\Http\Requests\AuthorRequest;
 use App\Http\Resources\AuthorResource;
-use Illuminate\Validation\Validator;
 
 class AuthorsController extends Controller
 {
@@ -15,11 +14,7 @@ class AuthorsController extends Controller
     {
         $validator = \Validator::make($request->all(), AuthorRequest::rules());
 
-        if ($validator->fails()) {
-            return view('_error_handler', ['errors' => $validator->errors()]);            
-        }else{
-            return true;
-        }
+        return $validator;
     }
     
     /**
@@ -54,12 +49,15 @@ class AuthorsController extends Controller
      */
     public function store(Request $request)
     {       
-        if($this->_validate($request))
+        $validated = $this->_validate($request);                
+        if(!$validated->fails())
         {        
             $author = new Author();            
             $author->_save($request->input('first_name'), $request->input('last_name'), $request->input('city'));                                    
 
             return redirect()->route('authors');
+        }else{
+            return view('authors.create', ['errors' => $validated->errors()]) ;
         }
     }
 
@@ -96,12 +94,15 @@ class AuthorsController extends Controller
      */
     public function update(Request $request)
     {                                        
-        if($this->_validate($request))
-        {        
-            $author = Author::findOrFail($request->route('id'));            
+        $validated = $this->_validate($request);                
+        $author = Author::findOrFail($request->route('id'));                    
+        if(!$validated->fails())
+        {                    
             $author->_save($request->input('first_name'), $request->input('last_name'), $request->input('city'));                                    
 
             return redirect()->route('authors');
+        }else{
+            return view('authors.create', ['errors' => $validated->errors(), 'model' => $author]) ;
         }
     }
 
@@ -120,7 +121,7 @@ class AuthorsController extends Controller
               return redirect()->back(); //new AuthorResource($author);  
             }
         }else{
-            return response()->json(['error' => 'Can\'t find author!']);
+            return response()->json(['errors' => 'Can\'t find author!']);
         }
     }
 }

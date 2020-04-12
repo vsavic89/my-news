@@ -53,7 +53,29 @@
                         @endforeach
                     </select>
                 </div>
-            </div>           
+            </div>     
+            <div class='row m-2 justify-content-center'>
+                <div class="col-2">
+                    <label for="tags">Tags: </label>                    
+                </div>                
+                <div class="col-4">                    
+                    <select multiple class="form-control" name='tags[]'>                        
+                        @foreach($tags as $tag)                            
+                            <option value="{{ $tag->id }}"                                     
+                                    @if(!empty($model)) 
+                                        @foreach($model->tags as $tagM)                                        
+                                           @if($tagM->id == $tag->id))
+                                             selected="selected"
+                                           @endif 
+                                        @endforeach
+                                    @endif
+                                    >
+                                {{ $tag->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>    
             <div class='row m-2 justify-content-center'>
                 <div class='col-6'>
                     <button class='mt-2 btn btn-primary btn-block' type="submit">Send</button>
@@ -62,3 +84,4 @@
         </div>   
     </form>
 @endsection
+@include('_error_handler')

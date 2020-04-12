@@ -15,11 +15,14 @@ class Article extends Model
         return $this->belongsToMany('App\Tag', 'article_tag', 'article_id');
     }
     
-    public function _save($title, $body, $authorId)
-    {
+    public function _save($title, $body, $authorId, $tags)
+    {                
         $this->title = $title;
         $this->body = $body;
         $this->author_id = $authorId;
         $this->save();
+        
+        $this->tags()->detach();        
+        $this->tags()->attach($tags);
     }
 }
