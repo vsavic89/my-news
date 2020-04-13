@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Article extends Model
 {
+    protected $fillable = ['title', 'body', 'author_id'];
+    
     public function author()
     {
         return $this->belongsTo('App\Author');                
@@ -15,14 +17,12 @@ class Article extends Model
         return $this->belongsToMany('App\Tag', 'article_tag', 'article_id');
     }
     
-    public function _save($title, $body, $authorId, $tags)
+    public function _save($array)
     {                
-        $this->title = $title;
-        $this->body = $body;
-        $this->author_id = $authorId;
+        $this->fill($array);
         $this->save();
         
         $this->tags()->detach();        
-        $this->tags()->attach($tags);
+        $this->tags()->attach($array['tags']);
     }
 }

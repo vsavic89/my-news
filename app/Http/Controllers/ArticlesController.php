@@ -11,6 +11,11 @@ use App\Http\Requests\ArticleRequest;
 
 class ArticlesController extends Controller
 {
+    public function _returnCreateView($edit, $model = null, $validated = null)
+    {
+        return view('articles.create', ['edit' => $edit, 'model' => $model, 'authors' => $this->_getAuthors(), 'tags' => $this->_getTags(), 'errors' => (!empty($validated) ? $validated->errors() : $validated)]);
+    }
+    
     public function _getAuthors()
     {
         $authors = Author::all()->sortBy('full_name');
@@ -51,7 +56,7 @@ class ArticlesController extends Controller
      */
     public function create()
     {        
-        return view('articles.create', ['authors' => $this->_getAuthors(), 'tags' => $this->_getTags()]);
+        return $this->_returnCreateView(false);
     }
 
     /**
@@ -66,11 +71,15 @@ class ArticlesController extends Controller
         if(!$validated->fails())
         {                              
             $article = new Article();
-            $article->_save($request->input('title'), $request->input('body'), $request->input('author_id'), $request->input('tags'));                        
+            $article->_save($request->all());                        
 
             return redirect()->route('articles'); //new ArticleResource($article);                    
-        }else{
-            return view('articles.create', ['errors' => $validated->errors()]) ;
+        }else{            
+            $article = new Article();
+            $article->fill($request->all());
+            $article->tags = $request->tags;
+            
+            return $this->_returnCreateView(false,$article, $validated); //view('articles.create', ['errors' => $validated->errors()]) ;
         }
     }
 
@@ -97,7 +106,7 @@ class ArticlesController extends Controller
     {
         $article = Article::findOrFail($id);
         
-        return view('articles.create', ['model' => $article, 'authors' => $this->_getAuthors(), 'tags' => $this->_getTags()]);
+        return $this->_returnCreateView(true, $article, null);
     }
 
     /**
@@ -113,11 +122,11 @@ class ArticlesController extends Controller
         $validated = $this->_validate($request);    
         if(!$validated->fails())
         {                                        
-            $article->_save($request->input('title'), $request->input('body'), $request->input('author_id'), $request->input('tags'));                        
+            $article->_save($request->all());                        
 
             return redirect()->route('articles'); //new ArticleResource($article);                    
         }else{
-            return view('articles.create', ['errors' => $validated->errors(), 'model' => $article]) ;
+            return $this->_returnCreateView(true, $article, $validated);
         }
     }
 

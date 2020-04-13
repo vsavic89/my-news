@@ -53,7 +53,7 @@ class AuthorsController extends Controller
         if(!$validated->fails())
         {        
             $author = new Author();            
-            $author->_save($request->input('first_name'), $request->input('last_name'), $request->input('city'));                                    
+            $author->_save($request->all());                                    
 
             return redirect()->route('authors');
         }else{
@@ -98,7 +98,7 @@ class AuthorsController extends Controller
         $author = Author::findOrFail($request->route('id'));                    
         if(!$validated->fails())
         {                    
-            $author->_save($request->input('first_name'), $request->input('last_name'), $request->input('city'));                                    
+            $author->_save($request->all());                                    
 
             return redirect()->route('authors');
         }else{

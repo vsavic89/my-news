@@ -1,6 +1,6 @@
 @extends('master')
 @section('content')
-    @if(!empty($model))
+    @if(!empty($model) && ($edit))
         <h1 class='alert alert-info text-center'>
             Edit the Article<small>&nbsp;&nbsp;oldish article info</small>   
         </h1>
@@ -12,7 +12,7 @@
     <p class='lead'>Lorem ipsum... <button class='btn btn-info' disabled='disabled'>Disabled</button></p>
     <p>Lorem ipsum...rogjoiwrej <mark>gerwiogj</mark> iroejg oierjg <span class='text-primary'>ieorjg</span> ioerjg oierj oierj ioerj </p>
     <p>Lorem Ipsum is simply dummy text of the printing and typesetting <strong>industry</strong>. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>    
-    @if(!empty($model))
+    @if(!empty($model) && ($edit))
         <form method="POST" action="/api/articles/edit/{{ $model->id }}">            
     @else
         <form method="POST" action="/api/articles">
@@ -62,12 +62,20 @@
                     <select multiple class="form-control" name='tags[]'>                        
                         @foreach($tags as $tag)                            
                             <option value="{{ $tag->id }}"                                     
-                                    @if(!empty($model)) 
-                                        @foreach($model->tags as $tagM)                                        
-                                           @if($tagM->id == $tag->id))
-                                             selected="selected"
-                                           @endif 
-                                        @endforeach
+                                    @if(!empty($model))          
+                                        @if($edit)
+                                            @foreach($model->tags as $tagM)
+                                               @if($tagM->id == $tag->id))                                             
+                                                 selected="selected"
+                                                @endif 
+                                             @endforeach
+                                         @else
+                                             @foreach($model->tags as $tagM)
+                                                 @if($tagM == $tag->id)
+                                                     selected="selected"
+                                                 @endif
+                                             @endforeach
+                                         @endif
                                     @endif
                                     >
                                 {{ $tag->name }}

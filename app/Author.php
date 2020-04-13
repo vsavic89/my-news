@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Author extends Model
 {
+    protected $fillable = ['first_name', 'last_name', 'city'];
+    
     public function articles()
     {
         return $this->hasMany('App\Article');
@@ -15,11 +17,9 @@ class Author extends Model
         return $this->first_name . ' ' . $this->last_name;
     }
     
-    public function _save($first_name, $last_name, $city)
+    public function _save($array)
     {
-        $this->first_name = $first_name;
-        $this->last_name = $last_name;
-        $this->city = $city;        
+        $this->fill($array);        
         $this->save();
     }
 }
