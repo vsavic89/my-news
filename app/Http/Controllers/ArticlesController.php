@@ -11,9 +11,9 @@ use App\Http\Requests\ArticleRequest;
 
 class ArticlesController extends Controller
 {
-    public function _returnCreateView($edit, $model = null, $validated = null)
+    public function _returnCreateView($model = null, $validated = null)
     {
-        return view('articles.create', ['edit' => $edit, 'model' => $model, 'authors' => $this->_getAuthors(), 'tags' => $this->_getTags(), 'errors' => (!empty($validated) ? $validated->errors() : $validated)]);
+        return view('articles.create', ['model' => $model, 'authors' => $this->_getAuthors(), 'tags' => $this->_getTags(), 'errors' => (!empty($validated) ? $validated->errors() : $validated)]);
     }
     
     public function _getAuthors()
@@ -56,7 +56,7 @@ class ArticlesController extends Controller
      */
     public function create()
     {        
-        return $this->_returnCreateView(false);
+        return $this->_returnCreateView();
     }
 
     /**
@@ -77,9 +77,16 @@ class ArticlesController extends Controller
         }else{            
             $article = new Article();
             $article->fill($request->all());
-            $article->tags = $request->tags;
-            
-            return $this->_returnCreateView(false,$article, $validated); //view('articles.create', ['errors' => $validated->errors()]) ;
+            if(!empty($request->tags))
+            {
+                for($i=0;$i<count($request->tags);$i++)
+                {
+                    $array[] = (object)['id' => $request->tags[$i]];
+                }
+
+                $article->tags = $array;
+            }
+            return $this->_returnCreateView($article, $validated); //view('articles.create', ['errors' => $validated->errors()]) ;
         }
     }
 
@@ -106,7 +113,7 @@ class ArticlesController extends Controller
     {
         $article = Article::findOrFail($id);
         
-        return $this->_returnCreateView(true, $article, null);
+        return $this->_returnCreateView($article, null);
     }
 
     /**
@@ -126,7 +133,7 @@ class ArticlesController extends Controller
 
             return redirect()->route('articles'); //new ArticleResource($article);                    
         }else{
-            return $this->_returnCreateView(true, $article, $validated);
+            return $this->_returnCreateView($article, $validated);
         }
     }
 

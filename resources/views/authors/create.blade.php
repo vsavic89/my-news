@@ -24,7 +24,7 @@
                     <label for="first_name">First Name: </label>
                 </div>
                 <div class="col-4">
-                    <input class="form-control" name="first_name" required value='{{ empty($model) ? '' : $model->first_name }}'/>
+                    <input class="form-control" name="first_name"  value='{{ empty($model) ? '' : $model->first_name }}'/>
                 </div>        
             </div>
             <div class='row m-2 justify-content-center'>
@@ -32,7 +32,7 @@
                     <label for="last_name">Last Name: </label>
                 </div>
                 <div class="col-4">
-                    <input class="form-control" name="last_name" required value='{{ empty($model) ? '' : $model->last_name }}' />
+                    <input class="form-control" name="last_name"  value='{{ empty($model) ? '' : $model->last_name }}' />
                 </div>
             </div>
             <div class='row m-2 justify-content-center'>
@@ -40,7 +40,7 @@
                     <label for="City">City: </label>
                 </div>
                 <div class="col-4">
-                    <input class="form-control" name="city" required value='{{ empty($model) ? '' : $model->city }}'/>
+                    <input class="form-control" name="city"  value='{{ empty($model) ? '' : $model->city }}'/>
                 </div>
             </div>
             <div class='row m-2 justify-content-center'>

@@ -24,7 +24,7 @@
                     <label for="name">Name: </label>
                 </div>
                 <div class="col-4">
-                    <input class="form-control" name="name" required value='{{ empty($model) ? '' : $model->name }}'/>
+                    <input class="form-control" name="name"  value='{{ empty($model) ? '' : $model->name }}'/>
                 </div>        
             </div>            
             <div class='row m-2 justify-content-center'>
