@@ -32,6 +32,7 @@ Route::get('tags', 'TagsController@index')->name('tags');
 Route::get('articles/{id}', 'ArticlesController@show')->name('single-article');
 Route::get('authors/{id}', 'AuthorsController@show')->name('single-author');
 Route::get('tags/{id}', 'TagsController@show')->name('single-tag');
+Route::post('invoke', 'InvokableController');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
