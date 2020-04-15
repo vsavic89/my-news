@@ -36,3 +36,4 @@ Route::post('invoke', 'InvokableController');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::resource('/comments', 'CommentsController');
